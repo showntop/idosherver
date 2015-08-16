@@ -1,0 +1,5 @@
+<%= form_for @category, url: categories_path, :html => { :multipart => true }  do |form| %>
+  <%= form.file_field :logo, as: :file %>
+  <%= form.file_field :background, as: :file %>
+  <%= submit_tag "Place Order" , :class => "submit" %>
+<% end %>

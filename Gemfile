@@ -53,3 +53,5 @@ end
 gem 'active_model_serializers'
 
 gem 'paperclip'
+
+gem 'devise'

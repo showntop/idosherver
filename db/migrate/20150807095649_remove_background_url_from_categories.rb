@@ -1,5 +1,5 @@
 class RemoveBackgroundUrlFromCategories < ActiveRecord::Migration
   def change
-    remove :background_url, :categories
+    remove_column :categories, :background_url, :string
   end
 end

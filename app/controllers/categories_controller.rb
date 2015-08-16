@@ -9,6 +9,15 @@ class CategoriesController < ApplicationController
     render json: @categories
   end
 
+  def group
+    @category_group = Category.group
+
+    render json: @category_group
+  end
+
+  def new
+    @category = Category.new
+  end
   # GET /categories/1
   # GET /categories/1.json
   def show
