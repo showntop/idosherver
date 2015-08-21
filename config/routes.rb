@@ -1,11 +1,22 @@
 Rails.application.routes.draw do
+  get 'topic_attachments/create'
+
   resources :camps, except: [:new, :edit]
-  devise_for :users
   scope '/api' do 
-    resources :topics, except: [:new, :edit]
+
+    namespace :users do 
+      post 'signin', to: 'sessions#create'
+      delete 'signout', to: 'sessions#destroy'
+    end
+
     resources :categories, except: [:edit] do
       get 'group', on: :collection
     end
+
+    resources :topic_attachments, only: [:create]
+    resources :topics, except: [:new, :edit]
+    
+    resources :replies, except: [:new, :edit]
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

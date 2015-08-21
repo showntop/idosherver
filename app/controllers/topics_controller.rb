@@ -18,13 +18,20 @@ class TopicsController < ApplicationController
   # POST /topics
   # POST /topics.json
   def create
-    @topic = Topic.new(topic_params)
-
-    if @topic.save
-      render json: @topic, status: :created, location: @topic
-    else
-      render json: @topic.errors, status: :unprocessable_entity
+    begin
+      @topic = Topic.create_with_attachments!(
+  	     topic_params
+  	  )  #Topic.new(topic_params)
+    rescue Exception => e
+      raise e
+      return
     end
+    render json: @topic, status: :created, location: @topic
+   # if @topic.save
+   #   render json: @topic, status: :created, location: @topic
+   # else
+   #   render json: @topic.errors, status: :unprocessable_entity
+   # end
   end
 
   # PATCH/PUT /topics/1
@@ -54,6 +61,6 @@ class TopicsController < ApplicationController
     end
 
     def topic_params
-      params.require(:topic).permit(:title, :user)
+      params.require(:topic).permit(:title, :cooked, :attachments)
     end
 end
