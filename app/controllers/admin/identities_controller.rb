@@ -1,59 +1,67 @@
 class Admin::IdentitiesController < ApplicationController
-  before_action :set_admin_identity, only: [:show, :update, :destroy]
+  before_action :set_identity, only: [:show, :update, :destroy]
 
   # GET /admin/identities
   # GET /admin/identities.json
   def index
-    @admin_identities = Admin::Identity.all
+    @identities = Identity.all
 
-    render json: @admin_identities
+    render json: @identities
+  end
+
+  def new
+    @identity = Identity.new
   end
 
   # GET /admin/identities/1
   # GET /admin/identities/1.json
   def show
-    render json: @admin_identity
+    render json: @identity
+  end
+
+  def edit
+    render json: @identity
   end
 
   # POST /admin/identities
   # POST /admin/identities.json
   def create
-    @admin_identity = Admin::Identity.new(admin_identity_params)
+    @identity = Identity.new(identity_params)
 
-    if @admin_identity.save
-      render json: @admin_identity, status: :created, location: @admin_identity
+    if @identity.save
+      render json: @identity, status: :created, location: [:admin, @identity]
     else
-      render json: @admin_identity.errors, status: :unprocessable_entity
+      render json: @identity.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /admin/identities/1
   # PATCH/PUT /admin/identities/1.json
   def update
-    @admin_identity = Admin::Identity.find(params[:id])
+    @identity = Identity.find(params[:id])
 
-    if @admin_identity.update(admin_identity_params)
+    if @identity.update(identity_params)
       head :no_content
     else
-      render json: @admin_identity.errors, status: :unprocessable_entity
+      render json: @identity.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /admin/identities/1
   # DELETE /admin/identities/1.json
   def destroy
-    @admin_identity.destroy
+    @identity.destroy
 
     head :no_content
   end
 
   private
 
-    def set_admin_identity
-      @admin_identity = Admin::Identity.find(params[:id])
+    def set_identity
+      @identity = Identity.find(params[:id])
     end
 
-    def admin_identity_params
-      params[:admin_identity]
+    def identity_params
+      params.require(:identity).permit(:name, :logo)
     end
 end

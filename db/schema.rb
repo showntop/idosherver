@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150827084055) do
+ActiveRecord::Schema.define(version: 20150827094449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,11 +109,13 @@ ActiveRecord::Schema.define(version: 20150827084055) do
     t.string   "location"
     t.string   "website"
     t.string   "bio"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.integer  "user_id"
+    t.integer  "identity_id"
   end
 
+  add_index "user_profiles", ["identity_id"], name: "index_user_profiles_on_identity_id", using: :btree
   add_index "user_profiles", ["user_id"], name: "index_user_profiles_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -138,5 +140,6 @@ ActiveRecord::Schema.define(version: 20150827084055) do
   add_foreign_key "topic_likes", "topics"
   add_foreign_key "topic_views", "topics"
   add_foreign_key "topics", "categories"
+  add_foreign_key "user_profiles", "identities"
   add_foreign_key "user_profiles", "users"
 end

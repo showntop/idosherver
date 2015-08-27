@@ -70,4 +70,8 @@ class User < ActiveRecord::Base
     User::Profile.create(user_id: self.id)
   end
 
+  def update_profile profile_params
+    user_profile.update(profile_params)#####可以一个SQL语句完成
+  end
+
 end
