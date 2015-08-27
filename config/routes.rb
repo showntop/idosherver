@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  namespace :admin do
+    resources :identities
+  end
+
   resources :camps, except: [:new, :edit]
   scope '/api' do 
 
