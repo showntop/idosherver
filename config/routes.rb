@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  get 'topic_attachments/create'
 
   resources :camps, except: [:new, :edit]
   scope '/api' do 
 
+    resources :users, only: [:show, :update]
+
     namespace :users do 
+      post 'signup', to: 'registrations#create'
       post 'signin', to: 'sessions#create'
       delete 'signout', to: 'sessions#destroy'
     end

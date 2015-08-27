@@ -57,3 +57,5 @@ gem 'paperclip'
 gem 'devise'
 
 gem 'redis'
+
+gem 'nokogiri'

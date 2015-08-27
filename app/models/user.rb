@@ -1,7 +1,17 @@
 require 'utils'
 class User < ActiveRecord::Base
 
+  has_one :user_profile, class_name: 'User::Profile', dependent: :destroy, inverse_of: :user
+
+  delegate :gender, :location, :website, to: :user_profile
+
+  validates :login, :allow_blank => true, :uniqueness => {:message=>"用户名已存在"}, :format => {:with=>/\A([a-z0-9_]+|)\z{5,15}/i, :message=>"用户名必须5-15个字符"}
+  validates :email, :presence => true, :format => {:with=>/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,:message=>"邮箱不正确"},:uniqueness => {:message => "邮箱已被注册"}
+  #validates :password, :format => {:with=>/.{6,20}/i,:message=>"密码应为6-20个字符，需同时包含字母和数字"}
+  #validates :password,:format => {:with=>/[\da-zA-Z]*((\d+[a-zA-Z]+)|([a-zA-Z]+\d+))[\da-zA-Z]*/,:message=>"密码须同时含字母数字"},:confirmation => true
+
   before_save :ensure_password_is_encrypted
+  after_create :create_user_profile
 
   TOKEN_KEY_PREFIX = 'token:users:'
   TOKEN_EXPIRE_TIME = 60 * 60 * 24
@@ -19,9 +29,9 @@ class User < ActiveRecord::Base
 
   end
 
-  def token
-    $redis.get("#{TOKEN_KEY_PREFIX}#{self.id}")#60 * 60 * 24 * 2 
-  end
+  # def token
+  #   $redis.get("#{TOKEN_KEY_PREFIX}#{self.id}")#60 * 60 * 24 * 2 
+  # end
 
   def settlein_token
     self.token = Utils.generate_uuid
@@ -54,6 +64,10 @@ class User < ActiveRecord::Base
 
   def encrypt_password(raw_password, salt)
     Utils::Password.encrypt(raw_password, salt)
+  end
+
+  def create_user_profile
+    User::Profile.create(user_id: self.id)
   end
 
 end

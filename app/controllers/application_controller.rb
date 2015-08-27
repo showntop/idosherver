@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate_user_from_token!
   
-  skip_before_action :authenticate_user_from_token!
-
   rescue_from 'Exception' do |exception|
     Rails.logger.info exception
     Rails.logger.info exception.backtrace.join("\n")

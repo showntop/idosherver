@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150820052735) do
+ActiveRecord::Schema.define(version: 20150827084055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 20150820052735) do
     t.string   "background_content_type"
     t.integer  "background_file_size"
     t.datetime "background_updated_at"
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
+  end
+
+  create_table "identities", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "logo_file_name"
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
@@ -87,22 +98,37 @@ ActiveRecord::Schema.define(version: 20150820052735) do
     t.integer  "category_id"
     t.text     "raw_content"
     t.text     "cooked"
+    t.string   "profile"
   end
 
   add_index "topics", ["category_id"], name: "index_topics_on_category_id", using: :btree
 
+  create_table "user_profiles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "gender"
+    t.string   "location"
+    t.string   "website"
+    t.string   "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+  end
+
+  add_index "user_profiles", ["user_id"], name: "index_user_profiles_on_user_id", using: :btree
+
   create_table "users", force: :cascade do |t|
-    t.string   "login",              default: "", null: false
-    t.string   "email",              default: "", null: false
-    t.string   "encrypted_password", default: "", null: false
-    t.string   "salt",                            null: false
-    t.integer  "sign_in_count",      default: 0,  null: false
+    t.string   "login",              default: "",    null: false
+    t.string   "email",              default: ""
+    t.string   "encrypted_password", default: "",    null: false
+    t.string   "salt",                               null: false
+    t.integer  "sign_in_count",      default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "initialized",        default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -112,4 +138,5 @@ ActiveRecord::Schema.define(version: 20150820052735) do
   add_foreign_key "topic_likes", "topics"
   add_foreign_key "topic_views", "topics"
   add_foreign_key "topics", "categories"
+  add_foreign_key "user_profiles", "users"
 end

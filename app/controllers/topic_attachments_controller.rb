@@ -6,7 +6,7 @@ class TopicAttachmentsController < ApplicationController
     @topic_attachment = TopicAttachment.new(topic_attachment_params)
 
     if @topic_attachment.save
-      render json: @topic_attachment, status: :created, location: @topic_attachment
+      render json: {attachment_url: @topic_attachment.attachment, uuid: @topic_attachment.uuid}, status: :created
     else
       render json: @topic_attachment.errors, status: :unprocessable_entity
     end
