@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   include AuthSystem
 
   before_action :authenticate_user_from_token!
+  skip_before_action :authenticate_user_from_token!
   
   rescue_from 'Exception' do |exception|
     Rails.logger.info exception

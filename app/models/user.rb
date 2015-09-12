@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   delegate :gender, :location, :website, to: :user_profile
 
-  validates :login, :allow_blank => true, :uniqueness => {:message=>"用户名已存在"}, :format => {:with=>/\A([a-z0-9_]+|)\z{5,15}/i, :message=>"用户名必须5-15个字符"}
-  validates :email, :presence => true, :format => {:with=>/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,:message=>"邮箱不正确"},:uniqueness => {:message => "邮箱已被注册"}
+  validates :login, :allow_blank => true, :uniqueness => {:message=>"该用户名已存在"}, :format => {:with=>/\A([a-z0-9_]+|)\z{5,15}/i, :message=>"用户名必须5-15个字符"}
+  validates :email, :presence => {:message => '邮箱不允许为空'}, :format => {:with=>/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,:message=>"邮箱格式不正确"},:uniqueness => {:message => "该邮箱已注册"}
   #validates :password, :format => {:with=>/.{6,20}/i,:message=>"密码应为6-20个字符，需同时包含字母和数字"}
   #validates :password,:format => {:with=>/[\da-zA-Z]*((\d+[a-zA-Z]+)|([a-zA-Z]+\d+))[\da-zA-Z]*/,:message=>"密码须同时含字母数字"},:confirmation => true
 

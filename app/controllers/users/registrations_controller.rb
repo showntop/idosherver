@@ -5,6 +5,7 @@ class Users::RegistrationsController < ApplicationController
   def create
     user = User.new(user_params)
     if user.save
+      signin_user user
       render json: user, status: 200
     else
       render json: user.errors, status: 400

@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   resources :camps, except: [:new, :edit]
   scope '/api' do 
 
-    resources :users, only: [:show, :update]
 
+    get 'users', to: 'users#show'
+    put 'users', to: 'users#update'
     namespace :users do 
       post 'signup', to: 'registrations#create'
       post 'signin', to: 'sessions#create'
